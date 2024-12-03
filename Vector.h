@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 
 template <class T>
@@ -45,7 +46,9 @@ public:
     }
 
     T& At(size_t pos);  //реализуем контроль доступа к элементам. Чтобы не ушло за рамки массива
-    T& operator[](size_t pos);  //просто выводим
+    T& operator[](size_t pos){  //просто выводим
+        return _array[pos];
+    }
 
     Vector& operator=(const Vector& tmp);
 //со скаляром
@@ -69,30 +72,42 @@ public:
     Vector operator+(const Vector& tmp){
         if(_size != tmp._size)
             throw "size ne rawno";
-        if(_startIndex > tmp._startIndex)
-            size_t index = _startIndex;
-        else size_t index = tmp._startIndex;
 
-        for(size_t i = index; i < _size; i++)
+        if(_startIndex > tmp._startIndex){
+            size_t index = _startIndex;
+            for(size_t i = index; i < _size; i++)
             _array[i] += tmp[i];
+        }
+        else {
+            size_t index = tmp._startIndex;
+            for(size_t i = index; i < _size; i++)
+            _array[i] += tmp[i];
+        }
+
     }
     Vector operator-(const Vector& tmp){
         if(_size != tmp._size)
             throw "size ne rawno";
-        if(_startIndex > tmp._startIndex)
+        if(_startIndex > tmp._startIndex){
             size_t index = _startIndex;
-        else size_t index = tmp._startIndex;
-
-        for(size_t i = index; i < _size; i++)
-            _array[i] -= tmp[i];
+            for(size_t i = index; i < _size; i++)
+                _array[i] -= tmp[i];
+        }
+        else {
+            size_t index = tmp._startIndex;
+            for(size_t i = index; i < _size; i++)
+                _array[i] -= tmp[i];
+        }
     }
 
     T operator* (const Vector* tmp){ //скалярное пр
+        size_t index = 0;
         if(_size != tmp._size)
             throw "size ne rawno";
+        else{
         if(_startIndex > tmp._startIndex)
-            size_t index = _startIndex;
-        else size_t index = tmp._startIndex;
+            index = _startIndex;
+        else index = tmp._startIndex;
 
         T res = 0;
 
@@ -101,6 +116,7 @@ public:
         }
 
         return res;
+        }
     }
     
     //операторы ввода и вывода
